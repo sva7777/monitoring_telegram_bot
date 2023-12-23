@@ -31,7 +31,7 @@ if __name__ == "__main__":
     # ToDo: add support of many devices and chats
     # ToDo: on fly add device(+chat) and remove it from monitoring. Need make server what performs job and clint to get and modify config
 
-    # ToDo: add interraption support
+    # ToDo: add signals support
 
     if len(sys.argv) != 4:
         print(
