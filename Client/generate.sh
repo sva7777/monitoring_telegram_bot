@@ -4,3 +4,6 @@ docker run --rm \
   -g python \
   -o /local/out/python
 
+rm -r ./openapi_client
+cp -r ./out/python/openapi_client ./openapi_client
+
