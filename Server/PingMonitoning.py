@@ -7,10 +7,8 @@ from pprint import pprint
 import requests
 
 
-# ToDo:
-
 class PingMonThread(threading.Thread):
-    def __init__(self, token:str , chat_id:int , ip_adress: str, event: Event):
+    def __init__(self, token: str, chat_id: int, ip_adress: str, event: Event):
         threading.Thread.__init__(self)
 
         self.token = token
@@ -18,8 +16,13 @@ class PingMonThread(threading.Thread):
         self.ip_address = ip_adress
         self.event = event
 
-    def ping(self):
+        message_down = f"устройство {self.ip_address} перестало пинговаться"
+        message_up = f"устройство {self.ip_address} стало пинговаться"
 
+        self.url_down = f"https://api.telegram.org/bot{self.token}/sendMessage?chat_id={self.chat_id}&text={message_down}"
+        self.url_up = f"https://api.telegram.org/bot{self.token}/sendMessage?chat_id={self.chat_id}&text={message_up}"
+
+    def ping(self):
         reply = subprocess.run(
             ["ping", "-c", "3", "-n", self.ip_address],
             stdout=subprocess.PIPE,
@@ -32,13 +35,6 @@ class PingMonThread(threading.Thread):
             return False
 
     def run(self):
-        # ToDo: may be move defines?
-        message_down = f"устройство {self.ip_address} перестало пинговаться"
-        message_up = f"устройство {self.ip_address} стало пинговаться"
-
-        url_down = f"https://api.telegram.org/bot{self.token}/sendMessage?chat_id={self.chat_id}&text={message_down}"
-        url_up = f"https://api.telegram.org/bot{self.token}/sendMessage?chat_id={self.chat_id}&text={message_up}"
-
         prestate = None
 
         while True:
@@ -54,16 +50,15 @@ class PingMonThread(threading.Thread):
 
                 pprint("down")
 
-                # pprint(requests.get(url_down))
+                pprint(requests.get(self.url_down))
+
             if prestate == False and state == True:
                 now = datetime.now()
                 current_time = now.strftime("%H:%M:%S")
                 print("Current Time =", current_time)
 
                 pprint("up")
-                # pprint(requests.get(url_up))
+                pprint(requests.get(self.url_up))
 
             prestate = state
             time.sleep(2)
-
-
