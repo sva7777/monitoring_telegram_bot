@@ -2,6 +2,8 @@ import io
 import uvicorn
 import yaml
 import functools
+import sys
+import click
 from fastapi import FastAPI, HTTPException
 from starlette.responses import JSONResponse
 from fastapi.responses import Response
@@ -85,5 +87,10 @@ async def list_telegram():
     return JSONResponse(res)
 
 
+@click.command()
+@click.argument("port",required=False, default=8500)
+def main(port):
+    uvicorn.run(app, host="0.0.0.0", port=port)
+
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8500)
+    main()
