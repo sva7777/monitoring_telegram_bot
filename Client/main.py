@@ -54,7 +54,7 @@ def add_mon(server_address, chat_id, token, ip_address, mon_type):
     default="http://0.0.0.0:8500",
     help="Address and port of monitoring server",
 )
-@click.option("--id", prompt="mon id to delete", help="mon id to delete")
+@click.option("--id", prompt="mon id to delete", help="mon id to delete", type=click.INT)
 def del_mon(server_address, id):
     # Defining the host is optional and defaults to http://localhost
     # See configuration.py for a list of all supported configuration parameters.

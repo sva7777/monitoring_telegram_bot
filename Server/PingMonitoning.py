@@ -48,8 +48,7 @@ class PingMonThread(threading.Thread):
 
             if errh.response.status_code == HTTPStatus.BAD_REQUEST and errh.response.reason == "Bad Request":
                 # chat id is not correct
-                # ToDo: add check for "chat not found"?
-                # ToDo: need to think how check chat id ASAP
+                   # ToDo: need to think how check chat id ASAP
                 pprint("Telegram chat id is not correct. Can not send message. Stop this monitoring")
                 self.event.set()
 
