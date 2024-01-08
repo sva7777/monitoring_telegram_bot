@@ -13,7 +13,7 @@ from pprint import pprint
     default="http://0.0.0.0:8500",
     help="Address and port of monitoring server",
 )
-@click.option("--chat_id", prompt="chat_id", help="telegram chat_id")
+@click.option("--chat_id", prompt="chat_id", help="telegram chat_id", type=click.INT)
 @click.option("--token", prompt="token", help="telegram bot token")
 @click.option("--ip_address", prompt="ip_address", help="ip address to monitor")
 @click.option(
