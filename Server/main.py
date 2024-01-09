@@ -68,8 +68,9 @@ async def add_telegram(item: TelegramChatData):
 @app.post("/DelTelegram")
 async def del_telegram(item: int):
     if item in threads_hashmap:
-        thread_info = threads_hashmap[item]
+        thread_info = threads_hashmap.pop(item)
         thread_info.event.set()
+
     else:
         raise HTTPException(status_code=404, detail="Item not found")
 
