@@ -1,11 +1,11 @@
-import sys
-import time
-import os
 import click
-
+import logging
+from sys import stdout
 import openapi_client
 from pprint import pprint
 
+# ToDo: add param debug_level(all commands). Default debug. Make it enum.
+# ToDO: can be mon_type be enum?
 
 @click.command()
 @click.option(
@@ -38,11 +38,11 @@ def add_mon(server_address, chat_id, token, ip_address, mon_type):
             api_response = api_instance.add_telegram_add_telegram_post(
                 telegram_chat_data
             )
-            print("The response of DefaultApi->add_telegram_add_telegram_add_post:\n")
+            pprint("The response of DefaultApi->add_telegram_add_telegram_add_post:\n")
             integer = int(api_response["id"])
             pprint(integer)
         except Exception as e:
-            print(
+            logger.error(
                 "Exception when calling DefaultApi->add_telegram_add_telegram_add_post: %s\n"
                 % e
             )
@@ -71,7 +71,7 @@ def del_mon(server_address, id):
             pprint(api_response)
 
         except Exception as e:
-            print(
+            logger.error(
                 "Exception when calling DefaultApi->del_telegram_del_telegram_post: %s\n"
                 % e
             )
@@ -99,7 +99,7 @@ def list_mon(server_address):
             pprint(api_response)
 
         except Exception as e:
-            print(
+            logger.error(
                 "Exception when calling DefaultApi->list_telegram_list_telegram_post: %s\n"
                 % e
             )
@@ -116,4 +116,16 @@ group.add_command(list_mon)
 
 
 if __name__ == "__main__":
+    # Define logger
+    logger = logging.getLogger('mylogger')
+    # Set default logger level. Can be overwritten by command line
+    logger.setLevel(logging.DEBUG)
+
+    logFormatter = logging.Formatter \
+        ("%(name)-12s %(asctime)s %(levelname)-8s %(filename)s:%(funcName)s %(message)s")
+    consoleHandler = logging.StreamHandler(stdout)  # set streamhandler to stdout
+    consoleHandler.setFormatter(logFormatter)
+    logger.addHandler(consoleHandler)
+
+
     group()
