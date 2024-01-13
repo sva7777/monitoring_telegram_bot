@@ -7,6 +7,7 @@ from pprint import pprint
 # ToDo: add param debug_level(all commands). Default debug. Make it enum.
 # ToDO: can be mon_type be enum?
 
+
 @click.command()
 @click.option(
     "--server_address",
@@ -54,7 +55,9 @@ def add_mon(server_address, chat_id, token, ip_address, mon_type):
     default="http://0.0.0.0:8500",
     help="Address and port of monitoring server",
 )
-@click.option("--id", prompt="mon id to delete", help="mon id to delete", type=click.INT)
+@click.option(
+    "--id", prompt="mon id to delete", help="mon id to delete", type=click.INT
+)
 def del_mon(server_address, id):
     # Defining the host is optional and defaults to http://localhost
     # See configuration.py for a list of all supported configuration parameters.
@@ -117,15 +120,15 @@ group.add_command(list_mon)
 
 if __name__ == "__main__":
     # Define logger
-    logger = logging.getLogger('mylogger')
+    logger = logging.getLogger("mylogger")
     # Set default logger level. Can be overwritten by command line
     logger.setLevel(logging.DEBUG)
 
-    logFormatter = logging.Formatter \
-        ("%(name)-12s %(asctime)s %(levelname)-8s %(filename)s:%(funcName)s %(message)s")
+    logFormatter = logging.Formatter(
+        "%(name)-12s %(asctime)s %(levelname)-8s %(filename)s:%(funcName)s %(message)s"
+    )
     consoleHandler = logging.StreamHandler(stdout)  # set streamhandler to stdout
     consoleHandler.setFormatter(logFormatter)
     logger.addHandler(consoleHandler)
-
 
     group()

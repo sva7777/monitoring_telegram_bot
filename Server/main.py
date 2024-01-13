@@ -10,6 +10,7 @@ from fastapi.responses import Response
 from threading import Event
 from PingMonitoning import PingMonThread
 from ThreadInfo import ThreadInfo
+from Telegram.TgSendMessage import TgSendMessage
 
 
 from data_model import TelegramChatData
@@ -32,7 +33,6 @@ def read_openapi_yaml():
 
 @app.post("/AddTelegram")
 async def add_telegram(item: TelegramChatData):
-    event = Event()
 
     for t in threads_hashmap.values():
         if (
@@ -46,7 +46,10 @@ async def add_telegram(item: TelegramChatData):
             )
 
     if item.tool == "ping":
-        thread = PingMonThread(item.token, item.chat_id, item.ip_address, event)
+        event = Event()
+
+        tg= TgSendMessage(item.token, item.chat_id, item.ip_address, event)
+        thread = PingMonThread(item.ip_address, event, tg)
         thread.start()
 
         thread_info = ThreadInfo(
@@ -89,9 +92,10 @@ async def list_telegram():
 
 
 @click.command()
-@click.argument("port",required=False, default=8500)
+@click.argument("port", required=False, default=8500)
 def main(port):
     uvicorn.run(app, host="0.0.0.0", port=port)
+
 
 if __name__ == "__main__":
     main()
