@@ -11,3 +11,7 @@ class TelegramChatData(BaseModel):
     chat_id: int
     ip_address: str
     tool: MonitoringTools
+
+
+class Message(BaseModel):
+    message: str
